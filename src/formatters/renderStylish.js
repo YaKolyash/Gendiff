@@ -16,7 +16,7 @@ const stringify = (value, depth, replacer = '    ') => {
 const renderStylish = (diffTree, replacer = '    ', depth = 1) => {
   const initialIndent = replacer.repeat(depth).slice(2);
   const result = diffTree.flatMap(({
-    key, value, status, value1, value2, children,
+    key, value, status, oldValue, newValue, children,
   }) => {
     switch (status) {
       case 'nested':
@@ -27,8 +27,8 @@ const renderStylish = (diffTree, replacer = '    ', depth = 1) => {
         return `${initialIndent}- ${key}: ${stringify(value, depth)}`;
       case 'changed':
         return [
-          `${initialIndent}- ${key}: ${stringify(value1, depth)}`,
-          `${initialIndent}+ ${key}: ${stringify(value2, depth)}`,
+          `${initialIndent}- ${key}: ${stringify(oldValue, depth)}`,
+          `${initialIndent}+ ${key}: ${stringify(newValue, depth)}`,
         ];
       case 'unchanged':
         return `${initialIndent}  ${key}: ${stringify(value, depth)}`;
