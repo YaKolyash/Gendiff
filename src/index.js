@@ -12,7 +12,7 @@ const getData = (pathToFile) => {
   return { data, format };
 };
 
-const genDiff = (filepath1, filepath2, format = 'stylish') => {
+const genDiff = (filepath1, filepath2, outputFormat = 'stylish') => {
   const beforeConfig = getData(filepath1);
   const afterConfig = getData(filepath2);
 
@@ -20,7 +20,7 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const data2 = getParseFile(afterConfig.format, afterConfig.data);
 
   const diffTree = makeAst(data1, data2);
-  return render(diffTree, format);
+  return render(diffTree, outputFormat);
 };
 
 export default genDiff;
