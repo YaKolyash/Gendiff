@@ -1,0 +1,29 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Compares two configuration files and shows a difference.",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Nikolay",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jest": "^27.9.0",
+    "eslint-plugin-json-format": "^2.0.1",
+    "jest": "^29.7.0",
+    "jest-cli": "^29.7.0"
+  }
+}
