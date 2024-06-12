@@ -16,21 +16,20 @@ const stringify = (value, depth, replacer = '    ') => {
 const renderStylish = (diffTree, replacer = '    ', depth = 1) => {
   const initialIndent = replacer.repeat(depth).slice(2);
   const result = diffTree.flatMap((node) => {
-    const {value, children} = node;
     switch (node.type) {
       case 'nested':
-        return `${initialIndent}  ${node.key}: ${renderStylish(children, replacer, depth + 1)}`;
+        return `${initialIndent}  ${node.key}: ${renderStylish(node.children, replacer, depth + 1)}`;
       case 'added':
-        return `${initialIndent}+ ${node.key}: ${stringify(value, depth)}`;
+        return `${initialIndent}+ ${node.key}: ${stringify(node.value, depth)}`;
       case 'deleted':
-        return `${initialIndent}- ${node.key}: ${stringify(value, depth)}`;
+        return `${initialIndent}- ${node.key}: ${stringify(node.value, depth)}`;
       case 'changed':
         return [
           `${initialIndent}- ${node.key}: ${stringify(node.value1, depth)}`,
           `${initialIndent}+ ${node.key}: ${stringify(node.value2, depth)}`,
         ];
       case 'unchanged':
-        return `${initialIndent}  ${node.key}: ${stringify(value, depth)}`;
+        return `${initialIndent}  ${node.key}: ${stringify(node.value, depth)}`;
       default:
         throw new Error(`Unknown status: '${node.type}'!`);
     }

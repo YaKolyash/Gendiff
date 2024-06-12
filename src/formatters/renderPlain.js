@@ -14,16 +14,16 @@ const renderPlain = (tree, parentKey = '') => {
   const result = tree
     .filter(({ status }) => status !== 'unchanged')
     .map((node) => {
-      const newProperty = _.trim(`${parentKey}.${key}`, '.');
+      const newProperty = _.trim(`${parentKey}.${node.key}`, '.');
       switch (node.type) {
         case 'changed':
-          return `Property '${newProperty}' was updated. From ${planValue(value1)} to ${planValue(value2)}`;
+          return `Property '${newProperty}' was updated. From ${planValue(node.value1)} to ${planValue(node.value2)}`;
         case 'added':
-          return `Property '${newProperty}' was added with value: ${planValue(value)}`;
+          return `Property '${newProperty}' was added with value: ${planValue(node.value)}`;
         case 'deleted':
           return `Property '${newProperty}' was removed`;
         case 'nested':
-          return renderPlain(children, newProperty);
+          return renderPlain(node.children, newProperty);
         default:
           throw new Error(`Unknown node status ${node.type}`);
       }
