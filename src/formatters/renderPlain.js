@@ -17,7 +17,7 @@ const renderPlain = (tree, parentKey = '') => {
       const newProperty = _.trim(`${parentKey}.${key}`, '.');
       switch (node.type) {
         case 'changed':
-          return `Property '${newProperty}' was updated. From ${planValue(oldValue)} to ${planValue(newValue)}`;
+          return `Property '${newProperty}' was updated. From ${planValue(value1)} to ${planValue(value2)}`;
         case 'added':
           return `Property '${newProperty}' was added with value: ${planValue(value)}`;
         case 'deleted':

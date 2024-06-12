@@ -1,27 +1,25 @@
 import _ from 'lodash';
 
-const makeAst = (file1, file2) => {
-    const fileKeys = _.sortBy(_.union(_.keys(file1), _.keys(file2)));
-    const result = fileKeys.map((key) => {
-      const oldValue = file1[key];
-      const newValue = file2[key];
-      if (!_.has(file2, key)) {
-        return { key, status: 'deleted', value: oldValue };
+const makeAst = (data1, data2) => {
+    const keys = _.sortBy(_.union(_.keys(data1), _.keys(data2)));
+    const result = keys.map((key) => {
+      if (!_.has(data2, key)) {
+        return { key, type: 'deleted', value: data1[key] };
       }
-      if (!_.has(file1, key)) {
-        return { key, status: 'added', value: newValue };
+      if (!_.has(data1, key)) {
+        return { key, type: 'added', value: data2[key] };
       }
-      if (oldValue === newValue) {
-        return { key, status: 'unchanged', value: oldValue };
+      if (data1[key] === data2[key]) {
+        return { key, type: 'unchanged', value: data1[key] };
       }
-      if (_.isObject(oldValue) && _.isObject(newValue)) {
-        return { key, status: 'nested', children: makeAst(oldValue, newValue) };
+      if (_.isObject(data1[key]) && _.isObject(data2[key])) {
+        return { key, type: 'nested', children: makeAst(data1[key], data2[key]) };
       }
       return {
         key,
-        status: 'changed',
-        oldValue,
-        newValue,
+        type: 'changed',
+        value1: data1[key],
+        value2: data2[key],
       };
     });
     return result;
