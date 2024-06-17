@@ -4,6 +4,9 @@ const planValue = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
+  if (value === null) {
+    return 'null';
+  }
   if (typeof value === 'string') {
     return `'${value}'`;
   }
@@ -24,6 +27,8 @@ const renderPlain = (tree, parentKey = '') => {
           return `Property '${newProperty}' was removed`;
         case 'nested':
           return renderPlain(node.children, newProperty);
+        case 'unchanged':
+          return '';
         default:
           throw new Error(`Unknown node status ${node.type}`);
       }
