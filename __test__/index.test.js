@@ -16,8 +16,8 @@ const cases = ['json', 'yml'];
 
 describe('gendiff', () => {
   test.each(cases)('format %s', (format) => {
-    const filepath1 = getFixturePath(`value1.${format}`);
-    const filepath2 = getFixturePath(`value2.${format}`);
+    const filepath1 = getFixturePath(`file1.${format}`);
+    const filepath2 = getFixturePath(`file2.${format}`);
 
     expect(genDiff(filepath1, filepath2)).toBe(expectedStylish);
     expect(genDiff(filepath1, filepath2, 'stylish')).toBe(expectedStylish);
