@@ -12,7 +12,6 @@ const planValue = (value) => {
 
 const renderPlain = (tree, parentKey = '') => {
   const result = tree
-    .filter(({ status }) => status !== 'unchanged')
     .map((node) => {
       const newProperty = _.trim(`${parentKey}.${node.key}`, '.');
       switch (node.type) {
@@ -23,11 +22,15 @@ const renderPlain = (tree, parentKey = '') => {
         case 'deleted':
           return `Property '${newProperty}' was removed`;
         case 'nested':
-          return renderPlain(node.children, newProperty);
+          const nestedResult = renderPlain(node.children, `${newProperty}`);
+          return nestedResult ? `${nestedResult}` : '';
+        case 'unchanged':
+          return '';
         default:
           throw new Error(`Unknown node status ${node.type}`);
       }
-    });
+    })
+    .filter((line) => line !== '');
   return result.join('\n');
 };
 
