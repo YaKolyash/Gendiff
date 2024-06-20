@@ -10,34 +10,25 @@ const planValue = (value) => {
   return `${value}`;
 };
 
-const renderPlain = (tree, parentKey = '') => {
-  const result = tree
-    .map((node) => {
-      const newProperty = _.trim(`${parentKey}.${node.key}`, '.');
-      let output;
-      switch (node.type) {
-        case 'changed':
-          output = `Property '${newProperty}' was updated. From ${planValue(node.value1)} to ${planValue(node.value2)}`;
-          break;
-        case 'added':
-          output = `Property '${newProperty}' was added with value: ${planValue(node.value)}`;
-          break;
-        case 'deleted':
-          output = `Property '${newProperty}' was removed`;
-          break;
-        case 'nested':
-          output = renderPlain(node.children, newProperty);
-          break;
-        case 'unchanged':
-          output = '';
-          break;
-        default:
-          throw new Error(`Unknown node status ${node.type}`);
-      }
-      return output;
-    })
-    .filter((line) => line !== '');
-  return result.join('\n');
-};
+const renderPlain = (tree, parentKey = '') => tree
+  .map((node) => {
+    const newProperty = _.trim(`${parentKey}.${node.key}`, '.');
+    switch (node.type) {
+      case 'changed':
+        return `Property '${newProperty}' was updated. From ${planValue(node.value1)} to ${planValue(node.value2)}`;
+      case 'added':
+        return `Property '${newProperty}' was added with value: ${planValue(node.value)}`;
+      case 'deleted':
+        return `Property '${newProperty}' was removed`;
+      case 'nested':
+        return renderPlain(node.children, newProperty);
+      case 'unchanged':
+        return '';
+      default:
+        throw new Error(`Unknown node status ${node.type}`);
+    }
+  })
+  .filter((line) => line !== '')
+  .join('\n');
 
 export default renderPlain;
